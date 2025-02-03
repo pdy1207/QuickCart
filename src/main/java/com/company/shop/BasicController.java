@@ -12,10 +12,4 @@ public class BasicController {
     String main(){
         return "index.html";
     }
-
-    @GetMapping("/date")
-    @ResponseBody
-    String dateTest(){
-        return LocalDateTime.now().toString();
-    }
 }
