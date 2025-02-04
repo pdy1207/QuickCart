@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Controller
 public class BasicController {
+
     @GetMapping("/")
     String main(){
         return "index.html";
