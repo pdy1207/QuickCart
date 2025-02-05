@@ -25,6 +25,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // Thymeleaf
 	runtimeOnly 'com.mysql:mysql-connector-j' // mysql-connector-j
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // jpa
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
