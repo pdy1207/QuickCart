@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: /build/libs/shop-0.0.1-SNAPSHOT.jar
+          path: '/build/libs/shop-0.0.1-SNAPSHOT.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -69,4 +69,4 @@ jobs:
         with:
           app-name: 'appService-server'
           slot-name: 'Production'
-          package: /build/libs/shop-0.0.1-SNAPSHOT.jar
+          package: '/build/libs/shop-0.0.1-SNAPSHOT.jar'
