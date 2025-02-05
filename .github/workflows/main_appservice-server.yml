@@ -23,7 +23,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'microsoft'
-        
+
       - name: Grant execute permission to gradlew
         run: chmod +x gradlew  # 실행 권한 부여
 
@@ -67,5 +67,5 @@ jobs:
         with:
           app-name: 'appService-server'
           slot-name: 'Production'
-          package: '*.jar'
+          package: 'build/libs/*.jar'
           
