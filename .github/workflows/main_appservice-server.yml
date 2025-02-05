@@ -29,7 +29,7 @@ jobs:
 
       # **Maven 빌드 -> Gradle 빌드로 변경**
       - name: Build with Gradle
-        run: ./gradlew build --no-daemon
+        run: ./gradlew bootJar
 
       - name: List build folder contents  # build/libs 폴더 내용 확인
         run: ls -alh build/libs
