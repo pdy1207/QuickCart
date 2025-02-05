@@ -23,6 +23,9 @@ jobs:
         with:
           java-version: '17'
           distribution: 'microsoft'
+        
+      - name: Grant execute permission to gradlew
+        run: chmod +x gradlew  # 실행 권한 부여
 
       # **Maven 빌드 -> Gradle 빌드로 변경**
       - name: Build with Gradle
