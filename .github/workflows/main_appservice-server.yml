@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read # This is required for actions/checkout
+      contents: read #This is required for actions/checkout
 
     steps:
       - uses: actions/checkout@v4
@@ -27,17 +27,18 @@ jobs:
       - name: Grant execute permission to gradlew
         run: chmod +x gradlew  # 실행 권한 부여
 
-      - name: Build with Gradle (BootJar)
-        run: ./gradlew bootJar --no-daemon
+      # **Maven 빌드 -> Gradle 빌드로 변경**
+      - name: Build with Gradle
+        run: ./gradlew bootJar
 
-      - name: List build/libs contents (확인용)
+      - name: List build folder contents  # build/libs 폴더 내용 확인
         run: ls -alh build/libs
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: build/libs/*.jar  # 🔹 JAR 파일 패턴 사용 (버전이 바뀌어도 자동 적용)
+          path: /build/libs/shop-0.0.1-SNAPSHOT.jar
 
   deploy:
     runs-on: ubuntu-latest
@@ -46,17 +47,14 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write # This is required for requesting the JWT
-      contents: read # This is required for actions/checkout
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: java-app
-
-      - name: List downloaded artifacts (확인용)
-        run: ls -alh java-app
 
       - name: Login to Azure
         uses: azure/login@v2
@@ -71,4 +69,4 @@ jobs:
         with:
           app-name: 'appService-server'
           slot-name: 'Production'
-          package: 'build/libs/*.jar'  # 🔹 업로드된 JAR 파일이 있는 위치 지정
+          package: /build/libs/shop-0.0.1-SNAPSHOT.jar
