@@ -71,4 +71,4 @@ jobs:
         with:
           app-name: 'appService-server'
           slot-name: 'Production'
-          package: 'java-app/*.jar'  # 🔹 업로드된 JAR 파일이 있는 위치 지정
+          package: 'build/libs/*.jar'  # 🔹 업로드된 JAR 파일이 있는 위치 지정
