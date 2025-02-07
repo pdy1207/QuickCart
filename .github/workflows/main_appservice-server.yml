@@ -69,5 +69,5 @@ jobs:
           app-name: 'appService-server'
           slot-name: 'Production'
           package: shop-0.0.1-SNAPSHOT.jar  # 🔹 다운로드된 JAR 직접 지정
-          env:
+        env:
             PORT: 80
