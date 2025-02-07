@@ -19,10 +19,20 @@
                 <div>
                     <h4 th:text="${i.title}"></h4>
                     <p th:text="${i.price + '원'}"></p>
+
                 </div>
             </a>
+            <button th:data-id="${i.id}" onclick="goToDetail(this)">수정</button>
         </div>
 
 
+    <script>
+        function goToDetail(button) {
+               const id = button.getAttribute("data-id");
+               window.location.href = `/edit/${id}`;
+           }
+    </script>
+
 </body>
+
 </html>
