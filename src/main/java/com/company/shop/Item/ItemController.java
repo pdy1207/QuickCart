@@ -1,8 +1,6 @@
-package com.company.shop;
+package com.company.shop.Item;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -76,6 +74,13 @@ public class ItemController {
         itemService.editItem(id,item);
         return "redirect:/list";
     }
+
+    @GetMapping("/del")
+    String test1(@RequestParam Item id) {
+        itemRepository.delete(id);  // id로 삭제
+        return "redirect:/list";  // 삭제 후 목록으로 리다이렉트
+    }
+
 
 
 
