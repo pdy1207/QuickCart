@@ -36,6 +36,16 @@ jobs:
           name: java-app  # 🔹 업로드 이름
           path: build/libs/shop-0.0.1-SNAPSHOT.jar  # 🔹 정확한 파일명 지정
 
+      - name: Send Slack notification (Build Success)
+        if: success()  # 빌드 성공 시 알림
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"GitHub Actions Build Success!"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Send Slack notification (Build Failure)
+        if: failure()  # 빌드 실패 시 알림
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"GitHub Actions Build Failed!"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -70,4 +80,14 @@ jobs:
           slot-name: 'Production'
           package: shop-0.0.1-SNAPSHOT.jar  # 🔹 다운로드된 JAR 직접 지정
         env:
-            PORT: 80
+          PORT: 80
+
+      - name: Send Slack notification (Deploy Success)
+        if: success()  # 배포 성공 시 알림
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"GitHub Actions Deployment to Azure Web App Success!"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Send Slack notification (Deploy Failure)
+        if: failure()  # 배포 실패 시 알림
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"GitHub Actions Deployment to Azure Web App Failed!"}' ${{ secrets.SLACK_WEBHOOK_URL }}
