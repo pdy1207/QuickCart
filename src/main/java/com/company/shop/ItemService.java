@@ -48,7 +48,7 @@ public class ItemService {
     public void editItem(@PathVariable Long id, @ModelAttribute Item item){
         Item editData = new Item();
         if (item.getTitle().length() >= 100 || item.getPrice() < 0) {
-            throw new IllegalArgumentException("제목은 100자 이하이어야 하며, 가격은 0 이상이어야 합니다..");
+            throw new IllegalArgumentException("제목은 100자 이하이어야 하며, 가격은 0 이상이어야 합니다.");
         }
         editData.setId(item.getId());
         editData.setTitle(item.getTitle());
