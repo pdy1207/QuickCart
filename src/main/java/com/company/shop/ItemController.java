@@ -1,12 +1,11 @@
 package com.company.shop;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +17,8 @@ public class ItemController {
 
     private final ItemRepository itemRepository;
 
+    private final ItemService itemService;
+
 /*
     Lombok X
     @Autowired
@@ -28,7 +29,7 @@ public class ItemController {
 
     @GetMapping("/list")
     String list(Model model) {
-        List<Item> result = itemRepository.findAll();
+        List<Item> result = itemService.findAllList();
         model.addAttribute("items", result);
         return "list.html";
     }
@@ -41,20 +42,15 @@ public class ItemController {
     @PostMapping("/add")
     String addPost(@RequestParam Map<String, String> formDate) {
 
-        String title = formDate.get("title");
-        Integer price = Integer.parseInt(formDate.get("price"));
-
-        Item item = new Item(title,price);
-
-        itemRepository.save(item);
-
+        itemService.saveItem(formDate);
         return "redirect:/list";
     }
 
     @GetMapping("/detail/{id}")
-    String addPost(@PathVariable Long id, Model model) {
-        Optional<Item> result = itemRepository.findById(id);
-        if( result.isPresent() ){
+    String findByDetail(@PathVariable Long id, Model model)  {
+
+        Optional<Item> result = itemService.findByIdList(id);
+        if (result.isPresent()) {
             model.addAttribute("item", result.get());
         } else {
             model.addAttribute("errorMessage", "해당 아이템을 찾을 수 없습니다.");
@@ -62,5 +58,26 @@ public class ItemController {
 
         return "detail.html";
     }
+
+    @GetMapping("/edit/{id}")
+    String editByDetail(@PathVariable Long id, Model model) {
+        Optional<Item> result = itemService.findByIdList(id);
+        if (result.isPresent()) {
+            model.addAttribute("item", result.get());
+        } else {
+            model.addAttribute("errorMessage", "해당 아이템을 찾을 수 없습니다.");
+        }
+
+        return "edit.html";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editItem(@PathVariable Long id, @ModelAttribute Item item) {
+        itemService.editItem(id,item);
+        return "redirect:/list";
+    }
+
+
+
 
 }
