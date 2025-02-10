@@ -36,10 +36,7 @@ public class ItemController {
     }
 
     @GetMapping("/write")
-    String write() {
-
-        return "write.html";
-    }
+    String write() { return "write.html"; }
 
     @PostMapping("/add")
     String addPost(@RequestParam Map<String, String> formData, Authentication auth) {
