@@ -1,10 +1,13 @@
 package com.company.shop.Item;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -34,13 +37,20 @@ public class ItemController {
 
     @GetMapping("/write")
     String write() {
+
         return "write.html";
     }
 
     @PostMapping("/add")
-    String addPost(@RequestParam Map<String, String> formDate) {
+    String addPost(@RequestParam Map<String, String> formData, Authentication auth) {
+        // formData는 Immutable Map이므로 새로 HashMap을 생성
+        Map<String, String> updatedFormData = new HashMap<>(formData);
 
-        itemService.saveItem(formDate);
+        if (auth.isAuthenticated()) {
+            updatedFormData.put("username", auth.getName()); // 로그인한 유저의 이름 추가
+        }
+
+        itemService.saveItem(updatedFormData); // 변경된 Map을 서비스에 전달
         return "redirect:/list";
     }
 
@@ -76,13 +86,18 @@ public class ItemController {
     }
 
     @GetMapping("/del")
-    String test1(@RequestParam Item id) {
+    String delItem(@RequestParam Item id) {
         itemRepository.delete(id);  // id로 삭제
         return "redirect:/list";  // 삭제 후 목록으로 리다이렉트
     }
 
 
-
+    @GetMapping("/test2")
+    String deleteItem() {
+        var result = new BCryptPasswordEncoder().encode("문자");
+        System.out.println(result);
+        return "redirect:/list";  // 삭제 후 목록으로 리다이렉트
+    }
 
 
 }

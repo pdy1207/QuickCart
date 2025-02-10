@@ -2,4 +2,9 @@
     <a class="logo">SpringMall</a>
     <a href="/list">List</a>
     <a href="/write">Write</a>
+    <a href="/register">sign up</a>
+<!--    <div sec:authentication="principal.Username"></div>-->
+    <div sec:authorize="isAuthenticated()">
+        <a href="/logout">로그아웃</a>
+    </div>
 </div>

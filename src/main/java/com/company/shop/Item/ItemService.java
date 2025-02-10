@@ -15,24 +15,26 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
-    public void saveItem(Map<String, String> formDate) {
-        if (formDate == null || !formDate.containsKey("title") || !formDate.containsKey("price")) {
+    public void saveItem(Map<String, String> formData) {
+        if (formData == null || !formData.containsKey("title") || !formData.containsKey("price")) {
             throw new IllegalArgumentException("필수 값(title, price)이 누락되었습니다.");
         }
 
-        String title = formDate.get("title");
+        String title = formData.get("title");
         if (title == null || title.trim().isEmpty()) {
             throw new IllegalArgumentException("title 값이 비어있습니다.");
         }
 
         int price;
         try {
-            price = Integer.parseInt(formDate.get("price"));
+            price = Integer.parseInt(formData.get("price"));
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("price 값은 숫자여야 합니다.");
         }
 
-        itemRepository.save(new Item(title, price));
+        String username = formData.get("username");
+
+        itemRepository.save(new Item(title, price,username));
     }
 
     public List<Item> findAllList() {
