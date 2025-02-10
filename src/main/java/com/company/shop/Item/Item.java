@@ -16,12 +16,14 @@ public class Item {
 
     private String title;
     private Integer price;
+    private String username;
 
     public Item() {}
 
-    public Item(String title, Integer price) {
+    public Item(String title, Integer price,String username) {
         this.title = title;
         this.price = price;
+        this.username = username;
     }
 }
 
