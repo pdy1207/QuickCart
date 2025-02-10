@@ -34,4 +34,9 @@ out/
 /.nb-gradle/
 
 ### VS Code ###
+<<<<<<< HEAD
 .vscode/
+=======
+.vscode/
+.env/
+>>>>>>> ebf5c87
