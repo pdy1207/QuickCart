@@ -1,6 +1,9 @@
 package com.company.shop.Item;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,7 @@ public class ItemController {
     private final ItemRepository itemRepository;
 
     private final ItemService itemService;
+    private final S3Service s3Service;
 
 /*
     Lombok X
@@ -35,11 +39,18 @@ public class ItemController {
         return "list.html";
     }
 
-    @GetMapping("/write")
-    String write() {
-
-        return "write.html";
+    @GetMapping("/list/page/{page}")
+    String getListPage(Model model, @PathVariable Integer page) {
+        Slice<Item> result = itemRepository.findPageBy(PageRequest.of(page-1,5));
+//        result.hasNext();
+//        result.getTotalPages(); slice 시 안알랴줌
+        model.addAttribute("items", result);
+        return "list.html";
     }
+
+
+    @GetMapping("/write")
+    String write() { return "write.html"; }
 
     @PostMapping("/add")
     String addPost(@RequestParam Map<String, String> formData, Authentication auth) {
@@ -97,6 +108,15 @@ public class ItemController {
         var result = new BCryptPasswordEncoder().encode("문자");
         System.out.println(result);
         return "redirect:/list";  // 삭제 후 목록으로 리다이렉트
+    }
+
+
+    @GetMapping("/presigned-url")
+    @ResponseBody
+    String getListPage(@RequestParam String filename) {
+        var result = s3Service.createPresignedUrl("test/" + filename);
+        System.out.println(result);
+        return result;
     }
 
 
