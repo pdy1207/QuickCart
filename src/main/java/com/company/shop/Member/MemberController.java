@@ -18,6 +18,7 @@ import java.util.Objects;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     @GetMapping("/register")
     String register(Authentication auth){
@@ -66,4 +67,36 @@ public class MemberController {
         return "mypage.html";
     }
 
+    @GetMapping("/user/1")
+    @ResponseBody
+    public MemberDto getUser(){
+        var a = memberRepository.findById(1L);
+        var result = a.get();
+        /*
+        * 패스워드 없이 보내기
+        * */
+//        var map = new HashMap<>();
+//        map.put(); Map 형식
+
+//        var data =new DataDto();
+//        data.username = result.getUsername();
+//        data.displayName = result.getDisplayName(); DTO 형식 object
+
+        var data = new MemberDto(result.getUsername(), result.getDisplayName());
+        return data;
+    }
+}
+
+// DTO 는 별 다른 파일로 옮기는게 좋고, Getter를 사용하면 public 없어도 됨.
+// 보내는 데이터의 타입체크가 쉽다.
+// 재사용이 쉽다.
+class MemberDto { // Data Transfer Object(데이터 변환용 클래스)
+    public String username;
+    public String displayName;
+    public Long Id;
+    // constructor
+    MemberDto(String a, String b){
+        this.username = a;
+        this.displayName = b;
+    }
 }
